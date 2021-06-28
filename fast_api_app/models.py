@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, CHAR, JSON, TIMESTAMP, text
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.mysql import BIT, INTEGER, TINYINT
+from sqlalchemy.dialects.postgresql import insert
 
 from .database import Base
 
@@ -11,7 +11,7 @@ class User(Base):
 
     __tablename__ = "users"
 
-    id = Column(INTEGER, primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True, nullable=False)
     email = Column(String(32), unique=True, index=True)
     usr_username = Column(String(45))
     hashed_password = Column(String(32))
@@ -39,32 +39,32 @@ class Item(Base):
 class FarmType(Base):
         __tablename__ = 'farm_types'
 
-        frm_type_id = Column(TINYINT, primary_key=True)
+        frm_type_id = Column(Integer, primary_key=True)
         frm_type_name = Column(String(45), nullable=False)
         frm_type_created = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
-        frm_type_enabled = Column(BIT(2), nullable=False, default=True)
+        frm_type_enabled = Column(Integer, nullable=False, default=True)
 
         
 class Region(Base):
         __tablename__ = 'regions'
 
-        reg_id = Column(TINYINT, primary_key=True)
+        reg_id = Column(Integer, primary_key=True)
         reg_name = Column(String(45), nullable=False)
         reg_created = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
         reg_updated = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
-        reg_enabled = Column(BIT(2), nullable=False,server_default=text("1"))
+        reg_enabled = Column(Integer, nullable=False,server_default=text("1"))
 
 
 
 class Farm(Base):
         __tablename__ = 'farms'
 
-        frm_id = Column(INTEGER, primary_key=True, nullable=False, autoincrement=True)
+        frm_id = Column(Integer, primary_key=True, unique=True, nullable=False, autoincrement=True)
         frm_name = Column(String(45), nullable=False)
         frm_restriction = Column(JSON)
         frm_created = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
         frm_updated = Column(TIMESTAMP)
-        frm_enabled = Column(BIT(2), nullable=False, default=1)
+        frm_enabled = Column(Integer, nullable=False, default=1)
         FARM_TYPES_frm_id = Column(ForeignKey('farm_types.frm_type_id'), primary_key=True, nullable=False, index=True)
         REGION_frm_id = Column(ForeignKey('regions.reg_id'), primary_key=True, nullable=False, index=True)
 
@@ -75,7 +75,7 @@ class Farm(Base):
 class FarmsVisited(Base):
         __tablename__ = 'farms_visited'
 
-        frm_visited_id = Column(INTEGER, primary_key=True, nullable=False, autoincrement=True)
+        frm_visited_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
         frm_visited_date = Column(TIMESTAMP, server_default=text("CURRENT_TIMESTAMP"))
         FARM_frm_visited_id = Column(ForeignKey('farms.frm_id'), primary_key=True, nullable=False, index=True)
         USER_frm_visited_id = Column(ForeignKey('users.id'), primary_key=True, nullable=False, index=True)
@@ -85,7 +85,7 @@ class FarmsVisited(Base):
 
     # coding: utf-8
 """     from sqlalchemy import CHAR, Column, ForeignKey, JSON, String, TIMESTAMP, text
-    from sqlalchemy.dialects.mysql import BIT, INTEGER, TINYINT
+    from sqlalchemy.dialects.mysql import BIT, Integer, TINYINT
     from sqlalchemy.orm import relationship
     from sqlalchemy.ext.declarative import declarative_base
 
@@ -115,7 +115,7 @@ class FarmsVisited(Base):
     class Farm(Base):
         __tablename__ = 'farms'
 
-        frm_id = Column(INTEGER, primary_key=True, nullable=False)
+        frm_id = Column(Integer, primary_key=True, nullable=False)
         frm_name = Column(String(45), nullable=False)
         frm_restriction = Column(JSON)
         frm_created = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))

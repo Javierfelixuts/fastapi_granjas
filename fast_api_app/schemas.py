@@ -91,6 +91,7 @@ class User(UserBase):
     id: int
     is_active: bool
     items: List[Item] = []
+    usr_username: str
 
     class Config:
         orm_mode = True
