@@ -17,7 +17,7 @@ class User(Base):
     hashed_password = Column(String(32))
     usr_name = Column(String(45))
     usr_lastname = Column(String(45))
-    usr_created = Column(TIMESTAMP)
+    usr_created = Column(TIMESTAMP, server_default=text("CURRENT_TIMESTAMP"))
     usr_updated = Column(TIMESTAMP)
     is_active = Column(Boolean, default=True)
     items = relationship("Item", back_populates="owner")

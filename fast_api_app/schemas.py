@@ -81,11 +81,11 @@ class Item(ItemBase):
 class UserBase(BaseModel):
     email: str
     usr_username : str
+    password: str
 
 
 class UserCreate(UserBase):
-    password: str
-    
+    pass
 
 class User(UserBase):
     id: int
